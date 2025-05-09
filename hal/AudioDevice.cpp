@@ -340,6 +340,9 @@ static void hdr_get_parameters(std::shared_ptr<AudioDevice> adev,
 }
 
 AudioDevice::~AudioDevice() {
+    if (property_get_bool("vendor.audio.feature.lvacfs.enable", false)) {
+        Lvacfs::getInstance().deinit();
+    }
     audio_extn_gef_deinit(adev_);
     audio_extn_sound_trigger_deinit(adev_);
     AudioExtn::battery_properties_listener_deinit();
@@ -1178,6 +1181,9 @@ int AudioDevice::Init(hw_device_t **device, const hw_module_t *module) {
 
     FillAndroidDeviceMap();
     FillPalDeviceMap();
+    if (property_get_bool("vendor.audio.feature.lvacfs.enable", false)) {
+        Lvacfs::getInstance().init();
+    }
     audio_extn_gef_init(adev_);
     adev_init_ref_count += 1;
 

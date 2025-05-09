@@ -47,6 +47,7 @@
 
 #include "PalDefs.h"
 #include <AudioExtn.h>
+#include <Lvacfs.h>
 #include <mutex>
 #include <map>
 
@@ -607,6 +608,11 @@ private:
      bool mInitialized;
     //Helper method to standby streams upon read failures and sleep for buffer duration.
     ssize_t onReadError(size_t bytes, size_t ret);
+    friend class Lvacfs;
+    Lvacfs& lvacfs;
+    void** lvacfs_instance = nullptr;
+    bool lvacfs_started  = false;
+    std::mutex lvacfs_lock;
 public:
     StreamInPrimary(audio_io_handle_t handle,
                     const std::set<audio_devices_t> &devices,
