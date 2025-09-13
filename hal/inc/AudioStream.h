@@ -26,7 +26,9 @@
  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Changes from Qualcomm Innovation Center are provided under the following license:
+ * Changes from Qualcomm Technologies, Inc. are provided under the following license:
+ * Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+ * SPDX-License-Identifier: BSD-3-Clause-Clear
  *
  * Copyright (c) 2022-2024, Qualcomm Innovation Center, Inc. All rights reserved.
  * SPDX-License-Identifier: BSD-3-Clause-Clear
@@ -498,6 +500,7 @@ private:
     pal_device_id_t* mPalOutDeviceIds;
     std::set<audio_devices_t> mAndroidOutDevices;
     bool mInitialized;
+    bool mComboDevice = false;
     bool isOffloadUsecase() {
         int usecase = GetUseCase();
         switch (usecase) {
@@ -565,6 +568,7 @@ public:
     source_metadata_t btSourceMetadata;
     std::vector<playback_track_metadata_t> tracks;
     int SetAggregateSourceMetadata(bool voice_active);
+    static std::mutex sourceMetadata_mutex_;
 protected:
     struct timespec writeAt;
     int get_compressed_buffer_size();
@@ -644,6 +648,7 @@ public:
     sink_metadata_t btSinkMetadata;
     std::vector<record_track_metadata_t> tracks;
     int SetAggregateSinkMetadata(bool voice_active);
+    static std::mutex sinkMetadata_mutex_;
 protected:
     struct timespec readAt;
     uint32_t fragments_ = 0;
