@@ -106,35 +106,25 @@ LOCAL_VENDOR_MODULE := true
 LOCAL_SRC_FILES:= battery_listener.cpp
 
 LOCAL_CFLAGS := \
+    -DQTI_HEALTH \
     -Wall \
     -Werror \
     -Wno-unused-function \
     -Wno-unused-variable
 
-ifneq ($(filter bengal blair,$(TARGET_BOARD_PLATFORM)),)
-    LOCAL_CFLAGS += -DQTI_HEALTH
-endif
-
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/inc
 
 LOCAL_SHARED_LIBRARIES := \
-    android.hardware.health@1.0 \
-    android.hardware.health@2.0 \
-    android.hardware.health@2.1 \
+    android.hardware.health-V1-ndk \
     android.hardware.power@1.2 \
     libaudioutils \
     libbase \
+    libbinder_ndk \
     libcutils \
     libdl \
     libhidlbase \
     liblog \
-    libutils \
-
-ifneq ($(filter bengal blair,$(TARGET_BOARD_PLATFORM)),)
-    LOCAL_SHARED_LIBRARIES += \
-        android.hardware.health-V1-ndk \
-        libbinder_ndk
-endif
+    libutils
 
 LOCAL_STATIC_LIBRARIES := libhealthhalutils
 
